@@ -1,0 +1,67 @@
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int n, mov = 0, head, min, j = 0, cp1; // Declaration of variables
+    int req[50], index[50], a[50], mini; // Arrays to store requests, indices, and sequence
+
+    // Input current position
+    printf("Enter the current position: ");
+    scanf("%d", &head);
+    cp1 = head; // Copy the current position for later calculation
+
+    // Input number of requests
+    printf("Enter the number of requests: ");
+    scanf("%d", &n);
+
+    // Input request order
+    printf("Enter the request order:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &req[i]);
+    }
+
+    // Loop through each request
+    for (int k = 0; k < n; k++) {
+        // Calculate distance of each request from the current position
+        for (int i = 0; i < n; i++) {
+            index[i] = abs(head - req[i]);
+        }
+
+        // Find the nearest request
+        min = index[0];
+        mini = 0;
+        for (int i = 1; i < n; i++) {
+            if (min > index[i]) {
+                min = index[i];
+                mini = i;
+            }
+        }
+
+        // Store the nearest request in the sequence
+        a[j] = req[mini];
+        j++;
+
+        // Update the current position to the next request
+        head = req[mini];
+
+        // Mark the processed request
+        req[mini] = 999;
+    }
+
+    // Output sequence
+    printf("Sequence is: ");
+    printf("%d", cp1);
+    mov += abs(cp1 - a[0]); // Head movement
+    printf(" -> %d", a[0]);
+    for (int i = 1; i < n; i++) {
+        mov += abs(a[i] - a[i - 1]); // Head movement
+        printf(" -> %d", a[i]);
+    }
+    printf("\n");
+
+    // Output total head movement
+    printf("Total head movement = %d\n", mov);
+
+    return 0;
+}

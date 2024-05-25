@@ -1,0 +1,50 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int main() {
+    int f[50] = {0}; // Array to represent disk blocks (0 = free, 1 = allocated)
+    int index[50], n, ind, st, len, j, c, k, count; // Declare variables
+    
+    do { // Start a do-while loop
+        count = 0; // Initialize count to 0
+        printf("Enter the index block: "); // Prompt user to enter the index block
+        scanf("%d", &ind); // Read the index block from the user
+        
+        if(f[ind] != 1) { // Check if the index block is not already allocated
+            printf("Enter the number of blocks needed and number of files for index %d on the disk: \n", ind); // Prompt user to enter the number of blocks needed
+            scanf("%d", &n); // Read the number of blocks needed from the user
+        } else {
+            printf("%d index is already allocated\n", ind); // Inform user that the index block is already allocated
+            continue; // Continue to the next iteration of the loop
+        }
+        
+        for(int i = 0; i < n; i++) { // Start a loop to input file indexes
+            printf("Enter block %d: ", i + 1); // Prompt user to enter a block index
+            scanf("%d", &index[i]); // Read the block index from the user
+            
+            if(f[index[i]] == 0) { // Check if the block is free
+                count++; // Increment count if the block is free
+            }
+        }
+        
+        if(count == n) { // Check if all requested blocks are free
+            printf("Allocated\n"); // Print "Allocated"
+            printf("File Indexed\n"); // Print "File Indexed"
+            
+            for(k = 0; k < n; k++) { // Start a loop to allocate blocks
+                f[index[k]] = 1; // Mark blocks as allocated
+                printf("%d-------->%d : %d\n", ind, index[k], f[index[k]]); // Print the allocation status of each block
+            }
+        } else {
+            printf("File in the index is already allocated\n"); // Inform user that the file in the index is already allocated
+            printf("Enter another file index\n"); // Prompt user to enter another file index
+            continue; // Continue to the next iteration of the loop
+        }
+        
+        printf("Do you want to enter more files? (Yes - 1 / No - 0): "); // Ask user if they want to enter more files
+        scanf("%d", &c); // Read user's choice
+        
+    } while(c == 1); // Continue the loop if user wants to enter more files
+
+    return 0; // Return 0 to indicate successful execution
+}

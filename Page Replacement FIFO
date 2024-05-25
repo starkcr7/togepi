@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+#define MAX_FRAMES 3 // Maximum number of frames
+
+int main() {
+    int n, pageFaults = 0; // Number of page references and page faults counter
+    int frames[MAX_FRAMES]; // Array to store pages in frames
+    int rear = -1; // Index of the rear of the queue
+    int pages[100]; // Array to store page references
+    int count = 0; // Number of pages currently in frames
+
+    // Initialize frames array
+    for (int i = 0; i < MAX_FRAMES; i++) {
+        frames[i] = -1; // Use -1 to indicate that the frame is empty
+    }
+
+    printf("Enter number of page references: ");
+    scanf("%d", &n); // Read the number of page references
+
+    printf("Enter the page references: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &pages[i]); // Read the page references
+    }
+
+    for (int i = 0; i < n; i++) {
+        int found = 0;
+        
+        // Check if the page is already in frames
+        for (int j = 0; j < count; j++) {
+            if (frames[j] == pages[i]) {
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found) {
+            // Page fault occurs
+            pageFaults++;
+            rear = (rear + 1) % MAX_FRAMES; // Move rear to the next frame position
+            frames[rear] = pages[i]; // Replace the page at the rear position
+            if (count < MAX_FRAMES) {
+                count++; // Increment count if frames are not yet full
+            }
+        }
+    }
+
+    printf("Total page faults: %d\n", pageFaults);
+
+    return 0;
+}
